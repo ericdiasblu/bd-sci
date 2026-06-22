@@ -1,0 +1,47 @@
+Exercício: Banco De Dados Da Copa Do Mundo
+A organização da Copa do Mundo deseja criar um sistema simples para controlar informações sobre os jogos do torneio.
+A competição possui várias seleções participantes. De cada seleção, devem ser guardados o nome do país, o continente e o nome do técnico.
+Os jogos acontecem em estádios diferentes. De cada estádio, devem ser registrados o nome, a cidade e a capacidade de público.
+Durante a Copa, cada jogo deve registrar a data da partida, o horário, a fase da competição e o estádio onde será realizado. 
+A fase pode ser, por exemplo, fase de grupos, oitavas de final, quartas de final, semifinal ou final.
+
+Cada jogo envolve duas seleções: a seleção mandante e a seleção visitante. Também deve ser registrado o número de gols feitos por cada seleção na partida.
+Além disso, a organização deseja registrar os árbitros da competição. De cada árbitro, devem ser guardados o nome e o país de origem. 
+Cada jogo deve ter um árbitro principal.
+
+Tarefa Dos Alunos
+Com base no texto, identifique quais tabelas devem ser criadas.
+Depois, crie as tabelas para Firebird, definindo:
+- campos;
+- tipos de dados;
+- chave primária;
+- chave estrangeira;
+- relacionamentos entre as tabelas.
+
+----------------
+
+SELECAO(codigo, codigo_continente, codigo_tecnico, codigo_pais)
+
+TECNICO (codigo, nome)
+
+ESTADIO(codigo, nome, cidade, capacidade do publico)
+
+JOGO (codigo, data da partida, horario, codigo_fase,codigo_estadio, codigo_arbitro)
+
+JOGOSITENS(codigo, codigo_jogo, codigo_selecao, gols, codigo_tipo)
+
+TIPOSELECAO(codigo, tipo)
+
+FASE(codigo, descricao)
+
+ARBITRO (codigo, nome, codigo_pais)
+
+CIDADE(codigo,nome,codigo_pais)
+
+PAIS(codigo, nome,codigo_continente)
+
+CONTINENTE(codigo,nome)
+
+
+
+
