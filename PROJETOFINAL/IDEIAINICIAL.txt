@@ -1,0 +1,11 @@
+CLIENTE (codigo, nome, telefone, endereco, cidade, uf)
+
+PRODUTO (codigo, identificador_comercial, descricao, preco_base)
+
+ALIQUOTA_ICMS (codigo, uf, aliquota)
+
+ALIQUOTA_FEDERAL (ano, aliquota_pis,aliquota_cofins)
+
+VENDA (codigo, data, numeracao_documento, serie_documento, codigo_cliente,valor_total)
+
+VENDA_ITEM (codigo, codigo_nota_fiscal, codigo_produto, quantidade, preco_unitario, valor_total_item)
