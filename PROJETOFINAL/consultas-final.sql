@@ -1,12 +1,12 @@
 -- 1.
 
 SELECT
-u.bddescuf,
-c.bdcodcliente,
-c.bdnomecliente,
-td.bddescdocumento,
-c.bddocumentocliente,
-c.bdenderecocliente
+u.bddescuf as "UF",
+c.bdcodcliente as "Código do cliente",
+c.bdnomecliente as "Nome do cliente",
+td.bddescdocumento as "Tipo de documento",
+c.bddocumentocliente as "Documento do cliente",
+c.bdenderecocliente as "Endereço do cliente"
 FROM tcliente c
 JOIN ttipodocumento td on (td.bdcodtpdocumento = c.bdcodtipodocumento)
 JOIN tcidade ci on (ci.bdcodcidade = c.bdcodcidade)
@@ -16,8 +16,8 @@ ORDER BY u.bddescuf, td.bddescdocumento, c.bddocumentocliente;
 -- 2.
 
 SELECT
-u.bddescuf,
-SUM(nf.bdvalortotal) as BDTOTALBRUTO
+u.bddescuf as "UF",
+SUM(nf.bdvalortotal) as "Total bruto"
 FROM tnotafiscal nf
 JOIN tcliente c on (c.bdcodcliente = nf.bdcodcliente)
 JOIN tcidade ci on (ci.bdcodcidade = c.bdcodcidade)
@@ -28,11 +28,11 @@ ORDER BY SUM(nf.bdvalortotal) desc;
 -- 3.
 
 SELECT
-nf.bdcodnotafiscal,
-c.bdnomecliente,
-u.bddescuf,
-p.bddescproduto,
-ai.bdaliquota
+nf.bdcodnotafiscal as "Código da nota fiscal",
+c.bdnomecliente as "Nome do cliente",
+u.bddescuf as "UF",
+p.bddescproduto as "Produto",
+ai.bdaliquota as "Alíquota ICMS"
 FROM tnotafiscal nf
 JOIN tnotafiscalitem nfi on (nfi.bdcodnota = nf.bdcodnotafiscal)
 JOIN tproduto p on (p.bdcodproduto = nfi.bdcodproduto)
@@ -43,20 +43,40 @@ JOIN taliquotaicms ai on (ai.bdcoduf = u.bdcoduf);
 
 -- 4.
 
---PRECISA DE PROCEDURE
+SELECT
+ai.bdfaturamentobruto as "Faturamento bruto",
+ai.bdtotalicms as "Total ICMS",
+ai.bdtotalpis as "Total PIS",
+ai.bdtotalcofins as "Total COFINS"
+FROM sp_apuracao_impostos(06,2026) ai;
 
 -- 5.
 
 SELECT
-u.bddescuf,
-COUNT(nf.bdcodnotafiscal),
-AVG(nf.bdvalortotal)
+u.bddescuf as "UF",
+COUNT(nf.bdcodnotafiscal) as "Total de notas",
+AVG(nf.bdvalortotal) as "Valor médio das notas"
 FROM tnotafiscal nf
 JOIN tcliente c on (c.bdcodcliente = nf.bdcodcliente)
-JOIN tuf u on (u.bdcoduf = c.bdcoduf)
-GROUP by u.bddescuf;
+JOIN tcidade ci on (ci.bdcodcidade = c.bdcodcidade)
+JOIN tuf u on (u.bdcoduf = c.bdcodcidade)
+GROUP by u.bddescuf
+HAVING COUNT(nf.bdcodnotafiscal) > 5;
 
---considerando apenas os estados que possuem mais de 5 vendas realizadas.
+-- 6.
+
+SELECT
+p.bdcodproduto as "Código do Produto",
+p.bddescproduto as "Produto",
+p.bdprecoproduto as "Preço",
+p.bdidentifcomercial as "Identificador comercial"
+FROM tproduto p
+LEFT JOIN tnotafiscalitem nfi on (nfi.bdcodproduto = p.bdcodproduto)
+WHERE NFI.BDCODNOTAITEM IS NULL;
+
+
+
+
 
 
 
